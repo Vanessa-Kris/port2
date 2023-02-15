@@ -37,75 +37,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import { Chart } from "react-google-charts";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 //import { TableVirtuoso } from "react-virtuoso";
-
-const sample = [
-  ["Frozen yoghurt", 159, 6.0, 24, 4.0],
-  ["Ice cream sandwich", 237, 9.0, 37, 4.3],
-  ["Eclair", 262, 16.0, 24, 6.0],
-  ["Cupcake", 305, 3.7, 67, 4.3],
-  ["Gingerbread", 356, 16.0, 49, 3.9],
-];
-
-function createData(id, dessert, calories, fat, carbs, protein) {
-  return { id, dessert, calories, fat, carbs, protein };
-}
-
-const columns = [
-  {
-    width: 200,
-    label: "Dessert",
-    dataKey: "dessert",
-  },
-  {
-    width: 120,
-    label: "Calories\u00A0(g)",
-    dataKey: "calories",
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: "Fat\u00A0(g)",
-    dataKey: "fat",
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: "Carbs\u00A0(g)",
-    dataKey: "carbs",
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: "Protein\u00A0(g)",
-    dataKey: "protein",
-    numeric: true,
-  },
-];
-
-const rows = Array.from({ length: 200 }, (_, index) => {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  return createData(index, ...randomSelection);
-});
-
-const VirtuosoTableComponents = {
-  Scroller: React.forwardRef((props, ref) => (
-    <TableContainer component={Paper} {...props} ref={ref} />
-  )),
-  Table: (props) => <Table {...props} style={{ borderCollapse: "separate" }} />,
-  TableHead,
-  TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
-  TableBody: React.forwardRef((props, ref) => (
-    <TableBody {...props} ref={ref} />
-  )),
-};
+import Table from "./Table";
 
 const drawerWidth = 240;
 //console.log(baseUrl);
@@ -241,7 +174,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <DashboardIcon /> : <HelpOutlineIcon />}
+                    {index % 0 === 3 ? <DashboardIcon /> : <HelpOutlineIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
@@ -276,7 +209,7 @@ export default function MiniDrawer() {
               </Grid>
             </Grid>
 
-            <Grid container spacing={2} sx={{ pt: 2 }}>
+            <Grid container spacing={2} sx={{ py: 2 }}>
               <Grid item xs={6} md={3}>
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth>
@@ -357,14 +290,7 @@ export default function MiniDrawer() {
 
           <Box>
             <Grid container spacing={2}>
-              <Grid
-                item
-                xs={4}
-                md={2}
-                bgcolor="#212121"
-                sx={{ m: 1 }}
-                height="100px"
-              >
+              <Grid item xs={12} md={6} bgcolor="#212121">
                 <Box color="#fff">
                   <Chart
                     chartType="ScatterChart"
@@ -379,23 +305,9 @@ export default function MiniDrawer() {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={4} md={2} bgcolor="#212121" sx={{ m: 1 }}>
+              <Grid item xs={12} md={6} bgcolor="#212121">
                 <Box color="#fff">
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.dataKey}
-                        variant="head"
-                        align={column.numeric || false ? "right" : "left"}
-                        style={{ width: column.width }}
-                        sx={{
-                          backgroundColor: "background.paper",
-                        }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                  <Table />
                 </Box>
               </Grid>
             </Grid>
