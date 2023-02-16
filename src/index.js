@@ -1,13 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import Dashboard from  './Dashboard.js'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import Dashboard from "./Dashboard.js";
 
 export default function App() {
   return (
-    <Dashboard/>
+    <>
+      <Dashboard />
+    </>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
