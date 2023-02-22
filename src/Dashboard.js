@@ -40,8 +40,8 @@ import TextField from "@mui/material/TextField";
 import LineChart from "./Chart";
 //import { TableVirtuoso } from "react-virtuoso";
 import Table from "./Table";
-import Help from "./Help";
-import { Link } from "@mui/material";
+//import Help from "./Help";
+//import { Link } from "@mui/material";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -111,6 +111,7 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
+//console.log(data);
 
 export default function MiniDrawer() {
   const theme = createTheme({
@@ -136,12 +137,15 @@ export default function MiniDrawer() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(baseUrl, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+      const response = await fetch(
+        `${baseUrl}/users?start=${start_date}&end=${end_date}&type=${type}&format=${format}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
@@ -150,7 +154,6 @@ export default function MiniDrawer() {
       const result = await response.json();
 
       console.log("result is: ", JSON.stringify(result, null, 4));
-
       setData(result);
     } catch (err) {
       setErr(err.message);
@@ -158,8 +161,6 @@ export default function MiniDrawer() {
       setIsLoading(false);
     }
   };
-
-  console.log(data);
 
   return (
     <ThemeProvider theme={theme}>
@@ -196,37 +197,28 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {[<Link to="/help"> Dashboard </Link>, "Help", "Support"].map(
-              (text, index) => (
-                <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
+            {["Dashboard", "Help", "Support"].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {index % 0 === 3 ? (
-                        <DashboardIcon />
-                      ) : (
-                        <HelpOutlineIcon />
-                      )}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )
-            )}
+                    {index % 0 === 3 ? <DashboardIcon /> : <HelpOutlineIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
           <Divider />
         </Drawer>
@@ -263,15 +255,15 @@ export default function MiniDrawer() {
                     <InputLabel id="demo-simple-select-label">Type</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="type"
+                      id={type}
                       value={type}
                       label="Type"
                       onChange={handleChange}
                     >
-                      <MenuItem color="" value={"available"}>
+                      <MenuItem color="" value={available}>
                         Available Users
                       </MenuItem>
-                      <MenuItem value={"signup"}>Signed Up users</MenuItem>
+                      <MenuItem value={signup}>Signed Up users</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -285,7 +277,7 @@ export default function MiniDrawer() {
                   <RadioGroup
                     color="#fff"
                     row
-                    id={"format"}
+                    id={format}
                     aria-labelledby="demo-radio-buttons-group-label"
                     defaultValue="Month"
                     value={format}
@@ -296,8 +288,8 @@ export default function MiniDrawer() {
                       col
                       xs={6}
                       md={6}
-                      value={"format_month"}
-                      id={"format_month"}
+                      value={month}
+                      id={month}
                       control={<Radio />}
                       label="Month"
                     />
@@ -305,8 +297,8 @@ export default function MiniDrawer() {
                       col
                       xs={6}
                       md={6}
-                      value={"format_day"}
-                      id={"format_day"}
+                      value={day}
+                      id={day}
                       control={<Radio />}
                       label="Day"
                     />
@@ -314,11 +306,12 @@ export default function MiniDrawer() {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={6} md={4} onChange={handleChange}>
+              <Grid item xs={6} md={4}>
                 <TextField
-                  id={"start_date"}
+                  id={start_date}
                   label="Start Date"
                   type="date"
+                  onChange={handleChange}
                   value={start_date}
                   sx={{ width: 220, p: 1 }}
                   InputLabelProps={{
@@ -327,10 +320,11 @@ export default function MiniDrawer() {
                 />
 
                 <TextField
-                  id={"end_date"}
+                  id={end_date}
                   label="End Date"
                   type="date"
                   value={end_date}
+                  onChange={handleChange}
                   sx={{ width: 220, p: 1 }}
                   InputLabelProps={{
                     shrink: true,
