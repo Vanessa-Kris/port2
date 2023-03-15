@@ -41,7 +41,8 @@ import LineChart from "./Chart";
 //import { TableVirtuoso } from "react-virtuoso";
 import Table from "./Table";
 //import Help from "./Help";
-//import { Link } from "@mui/material";
+//import { Link } from "@mui/material"
+//import Controller from "./Controller";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -133,6 +134,15 @@ export default function MiniDrawer() {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("Sorry we can't get any data right now");
 
+  let start_date = "";
+  let end_date = "";
+  let type = "";
+  let format = "";
+  let available = "";
+  let signup = "";
+  let day = "";
+  let month = "";
+
   const handleChange = async () => {
     setIsLoading(true);
 
@@ -222,7 +232,11 @@ export default function MiniDrawer() {
           </List>
           <Divider />
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3 }}
+          // response={setData(onChange)}
+        >
           <DrawerHeader />
 
           <Box>
@@ -270,7 +284,7 @@ export default function MiniDrawer() {
               </Grid>
 
               <Grid item xs={6} md={2}>
-                <FormControl sx={{ ms: 5 }}>
+                <FormControl sx={{ ms: 5 }} className="format">
                   <FormLabel id="demo-radio-buttons-group-label">
                     Format
                   </FormLabel>
@@ -321,7 +335,7 @@ export default function MiniDrawer() {
 
                 <TextField
                   id={end_date}
-                  label="End Date"
+                  label="end Date"
                   type="date"
                   value={end_date}
                   onChange={handleChange}
