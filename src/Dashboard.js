@@ -112,7 +112,6 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
-//console.log(data);
 
 export default function MiniDrawer() {
   const theme = createTheme({
@@ -134,21 +133,12 @@ export default function MiniDrawer() {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("Sorry we can't get any data right now");
 
-  let start_date = "";
-  let end_date = "";
-  let type = "";
-  let format = "";
-  let available = "";
-  let signup = "";
-  let day = "";
-  let month = "";
-
   const handleChange = async () => {
     setIsLoading(true);
 
     try {
       const response = await fetch(
-        `${baseUrl}/users?start=${start_date}&end=${end_date}&type=${type}&format=${format}`,
+        `${baseUrl}/users?start=${start_date.value}&end=${end_date.value}&type=${type.value}&format=${format.value}`,
         {
           method: "GET",
           headers: {
@@ -269,52 +259,50 @@ export default function MiniDrawer() {
                     <InputLabel id="demo-simple-select-label">Type</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id={type}
+                      id="type"
                       value={type}
                       label="Type"
                       onChange={handleChange}
                     >
-                      <MenuItem color="" value={available}>
-                        Available Users
-                      </MenuItem>
-                      <MenuItem value={signup}>Signed Up users</MenuItem>
+                      <MenuItem value="available">Available Users</MenuItem>
+                      <MenuItem value="signup">Signed Up users</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
               </Grid>
 
               <Grid item xs={6} md={2}>
-                <FormControl sx={{ ms: 5 }} className="format">
+                <FormControl sx={{ ms: 5 }}>
                   <FormLabel id="demo-radio-buttons-group-label">
                     Format
                   </FormLabel>
                   <RadioGroup
-                    color="#fff"
                     row
-                    id={format}
+                    id="format"
                     aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="Month"
-                    value={format}
+                    // defaultValue="Month"
+                    // value={format}
                     name="radio-buttons-group"
-                    onChange={handleChange}
                   >
                     <FormControlLabel
                       col
                       xs={6}
                       md={6}
-                      value={month}
-                      id={month}
+                      value="format_month"
+                      id="format_month"
                       control={<Radio />}
                       label="Month"
+                      onChange={handleChange}
                     />
                     <FormControlLabel
                       col
                       xs={6}
                       md={6}
-                      value={day}
-                      id={day}
+                      value="format_day"
+                      id="format_day"
                       control={<Radio />}
                       label="Day"
+                      onChange={handleChange}
                     />
                   </RadioGroup>
                 </FormControl>
@@ -322,11 +310,11 @@ export default function MiniDrawer() {
 
               <Grid item xs={6} md={4}>
                 <TextField
-                  id={start_date}
+                  id="start_date"
                   label="Start Date"
                   type="date"
                   onChange={handleChange}
-                  value={start_date}
+                  //value={start_date}
                   sx={{ width: 220, p: 1 }}
                   InputLabelProps={{
                     shrink: true,
@@ -334,10 +322,10 @@ export default function MiniDrawer() {
                 />
 
                 <TextField
-                  id={end_date}
+                  id="end_date"
                   label="end Date"
                   type="date"
-                  value={end_date}
+                  //value={end_date}
                   onChange={handleChange}
                   sx={{ width: 220, p: 1 }}
                   InputLabelProps={{
@@ -367,3 +355,11 @@ export default function MiniDrawer() {
     </ThemeProvider>
   );
 }
+let start_date = document.getElementById("start_date");
+let end_date = document.getElementById("end_date");
+let type = document.getElementById("type");
+let format = document.getElementById("format");
+//let available = document.getElementById("available");
+//let signup = document.getElementById("signup");
+//let format_day = document.getElementById("format_day");
+//let format_month = document.getElementById("format_month");

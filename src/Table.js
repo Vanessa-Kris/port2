@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import { TableVirtuoso } from "react-virtuoso";
 //import Dashboard from "./Dashboard";
 
-//const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const sample = [
   ["Frozen yoghurt", 159],
@@ -18,25 +18,32 @@ const sample = [
   ["Cupcake", 305],
   ["Gingerbread", 356],
 ];
-//let headers = [format.toUpperCase(), type.toUpperCase()];
+let type = "";
+let format = "";
+
+let headers = [format.toUpperCase(), type.toUpperCase()];
 
 function createData(id, dessert, calories) {
   return { id, dessert, calories };
 }
 
+fetch(baseUrl);
+
 const columns = [
   {
     width: 200,
-    label: "Dessert",
+    label: `${headers[0]}`,
     dataKey: "dessert",
   },
   {
     width: 120,
-    label: "Calories\u00A0(g)",
+    label: `${headers[1]}`,
     dataKey: "calories",
     numeric: true,
   },
 ];
+
+console.log(headers[1]);
 
 const rows = Array.from({ length: 200 }, (_, index) => {
   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
@@ -94,7 +101,7 @@ function ReactVirtualizedTable() {
   return (
     <Paper style={{ height: 400, width: "100%" }}>
       <TableVirtuoso
-        data
+        data={rows}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
